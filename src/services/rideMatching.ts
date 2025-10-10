@@ -81,7 +81,8 @@ function calculateTimingScore(
     (userDepartureTime.getTime() - rideDepartureTime.getTime()) / (1000 * 60)
   );
 
-  const maxAcceptableDelay = 30;
+  // Expand acceptable time window to 6 hours for broader matching
+  const maxAcceptableDelay = 360;
 
   if (timeDiffMinutes > maxAcceptableDelay) {
     return 0;
@@ -174,7 +175,8 @@ export function matchRides(
       rideDest
     );
 
-    if (routeSimilarity < 20) {
+    // Very low threshold to show most rides
+    if (routeSimilarity < 1) {
       continue;
     }
 
@@ -182,10 +184,6 @@ export function matchRides(
       departureTime,
       new Date(ride.departure_time)
     );
-
-    if (timingScore < 10) {
-      continue;
-    }
 
     const detourCost = calculateDetourCost(
       userOrigin,

@@ -1,8 +1,8 @@
-# Intelligent Carpooling Application - System Architecture
+# ShareWay - Intelligent Carpooling System Architecture
 
 ## Overview
 
-This is an AI-powered carpooling platform designed to reduce traffic congestion and lower emissions, directly contributing to **SDG 11: Sustainable Cities and Communities**. The application uses intelligent algorithms for ride matching, route optimization, and sustainability tracking.
+**ShareWay** is an AI-powered carpooling platform designed to reduce traffic congestion and lower emissions, directly contributing to **SDG 11: Sustainable Cities and Communities**. The application uses intelligent algorithms for ride matching, route optimization, sustainability tracking, and comprehensive safety features.
 
 ## System Architecture
 

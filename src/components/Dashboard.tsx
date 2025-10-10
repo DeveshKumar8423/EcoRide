@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { Car, MapPin, Calendar, Users, Leaf, Trophy, TrendingUp, LogOut, Plus, Search } from 'lucide-react';
+import { Car, MapPin, Calendar, Users, Leaf, Trophy, TrendingUp, LogOut, Plus, Search, Gift } from 'lucide-react';
 import ImpactDashboard from './ImpactDashboard';
 import RideList from './RideList';
 import CreateRide from './CreateRide';
 import FindRide from './FindRide';
+import { RewardsCenter } from './RewardsCenter';
 
-type Tab = 'find' | 'rides' | 'impact' | 'profile';
+type Tab = 'find' | 'rides' | 'impact' | 'rewards' | 'profile';
 
 export default function Dashboard() {
   const { user, logout } = useAuth();
@@ -24,16 +25,30 @@ export default function Dashboard() {
               <div className="w-10 h-10 bg-emerald-600 rounded-xl flex items-center justify-center">
                 <Car className="w-6 h-6 text-white" />
               </div>
-              <span className="text-xl font-bold text-gray-900">EcoRide</span>
+              <span className="text-xl font-bold text-gray-900">ShareWay</span>
             </div>
 
             <div className="flex items-center gap-4">
-              <div className="hidden md:flex items-center gap-2 bg-emerald-50 px-4 py-2 rounded-lg">
+              <button
+                onClick={() => setActiveTab('rewards')}
+                className="hidden md:flex items-center gap-2 bg-emerald-50 px-4 py-2 rounded-lg hover:bg-emerald-100 transition-colors cursor-pointer"
+              >
                 <Trophy className="w-4 h-4 text-emerald-600" />
                 <span className="text-sm font-semibold text-emerald-900">
                   {user.reward_points} points
                 </span>
-              </div>
+              </button>
+
+              <button
+                onClick={() => {
+                  setActiveTab('rides');
+                  setShowCreateRide(true);
+                }}
+                className="hidden sm:inline-flex items-center gap-2 bg-emerald-600 text-white px-3 py-2 rounded-lg hover:bg-emerald-700 transition-colors"
+              >
+                <Plus className="w-4 h-4" />
+                Offer Ride
+              </button>
 
               <button
                 onClick={logout}
@@ -116,6 +131,18 @@ export default function Dashboard() {
           </button>
 
           <button
+            onClick={() => setActiveTab('rewards')}
+            className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium whitespace-nowrap transition-all ${
+              activeTab === 'rewards'
+                ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-200'
+                : 'bg-white text-gray-700 hover:bg-gray-50'
+            }`}
+          >
+            <Gift className="w-4 h-4" />
+            Rewards
+          </button>
+
+          <button
             onClick={() => setActiveTab('profile')}
             className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium whitespace-nowrap transition-all ${
               activeTab === 'profile'
@@ -146,6 +173,7 @@ export default function Dashboard() {
             </div>
           )}
           {activeTab === 'impact' && <ImpactDashboard />}
+          {activeTab === 'rewards' && <RewardsCenter />}
           {activeTab === 'profile' && (
             <div className="bg-white rounded-xl shadow-sm p-6">
               <h2 className="text-2xl font-bold text-gray-900 mb-6">Profile</h2>
@@ -185,7 +213,12 @@ export default function Dashboard() {
       </div>
 
       {showCreateRide && (
-        <CreateRide onClose={() => setShowCreateRide(false)} />
+        <CreateRide
+          onClose={() => setShowCreateRide(false)}
+          onCreated={() => {
+            setActiveTab('rides');
+          }}
+        />
       )}
     </div>
   );
